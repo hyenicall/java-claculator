@@ -1,0 +1,110 @@
+package frontend_calculator;
+
+import java.util.Scanner;
+
+import operator_calculator.Operator;
+
+public class Front_End {
+	private String title;
+
+	public Front_End() {
+		this.title =this.title();
+		this.entrance();
+	}
+
+	private void entrance() {
+
+		boolean isContinue=false;
+
+		String number1;
+		String number2;
+		String oper;
+		String nemu;
+		String con;
+		int result=0;
+
+
+		this.print(this.title);
+		this.print(" [시작할까요?]\n");
+		this.print("  1. 시작        0. 종료\n");
+		this.print("  ________________________ :");
+		String menu = new String(); 
+		menu = this.userInput();
+
+		if(menu.equals("1")) {
+			isContinue=true;
+			
+
+		}
+		while(isContinue) {
+
+			this.print(this.title);
+			this.print("숫자를 입력하세요 : ");//number1
+			number1=this.userInput();
+
+			this.print(this.title);
+			this.print("[연산자 선택]\n"
+					+ "1. 더하기	2. 빼기\n"
+					+"3. 곱하기	4. 나누기\n");
+			oper=this.userInput();
+
+			this.print(this.title);
+			this.print("숫자를 입력하세요 : ");//number2
+			number2=this.userInput();
+
+
+			Operator operator=new Operator(Integer.parseInt(number1), Integer.parseInt(number2));
+
+			switch(oper) {
+			case "1":
+				oper="+";
+				result=operator.plus();
+				break;
+			case "2":
+				oper="-";
+				result=operator.minus();
+				break;
+			case"3":
+				oper="×";
+				result=operator.product();
+				break;
+			default:
+				oper="÷";
+				result=operator.devide();
+				break;
+			}
+			this.print("\n\n"+"연산 결과 : "+number1+" "+oper+" "+number2+" = " +result+"\n\n");
+			//result값을 그냥 입력해도 되는 이유는 "sting"+int = 문자로 인식하기 때문이다.
+			this.print("계속할까요?  y/n\n");
+			con=this.userInput();
+			if(con.equals("n")) {
+				this.print("\n프로그램을 종료합니다.\n");
+				break;
+			}
+			//this.print(Integer.toString(result)+"\n\n");		
+		}
+	}
+
+	// 입력기능 : java.util.Scanner
+	//           패키지
+	private String userInput() {
+		Scanner scanner =	 new Scanner(System.in);
+		return scanner.next();
+
+	}
+
+	private String title() {
+		StringBuffer title = new StringBuffer();
+		title.append("--------------------------\n\n");
+		title.append("     Welcome to Calculator\n");
+		title.append("\n");
+		title.append("--------------------------\n");
+		return title.toString();
+	}
+
+	private void print(String box) {
+		System.out.print(box);
+	}
+
+
+}
