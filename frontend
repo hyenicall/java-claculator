@@ -1,110 +1,141 @@
-package frontend_calculator;
+package frontend;
 
 import java.util.Scanner;
 
-import operator_calculator.Operator;
+import operlator.Operlator;
 
-public class Front_End {
-	private String title;
+public class Frontend {
+	//필요기능 : 프로세스기능,입력기능,출력기능
+	//입출력은 어떤 메소드에서 부를지 모르니 리턴타입으로 만드는 것이 좋다. 
+	//다른 변수에 저장하는 기능으로 만들면 입출력 사용시 제한이 많기 때문에
 
-	public Front_End() {
-		this.title =this.title();
-		this.entrance();
+	String title;
+
+	//1. 생성자는 public이어야 한다.
+	//2. 생성자를 호출하면 HDD에서 Heap메모리로 클래스를 올린다.
+	//3. 생성자는 클래스 내부 변수들을 초기화 해주는 기능만 갖는다.
+
+	public Frontend() {//생성자 
+		this.title();
+		gate(title);
+	}
+	//프로세스
+	private void gate(String text) {
+
+		boolean flag;
+
+		this.print(text);
+		this.print("[star?]\n");
+		this.print("	1. start	2.exit\n");
+		this.print("----------------------------------------------\n");
+		flag=(this.input().equals("1"))?true:false;
+
+		this.inputNum(flag, text, menu());
+
 	}
 
-	private void entrance() {
+	private void inputNum(boolean flag, String text, String[] menu) {
 
-		boolean isContinue=false;
-
-		String number1;
+		String number1;		
 		String number2;
 		String oper;
-		String nemu;
-		String con;
-		int result=0;
+		String ans;
+		String[] userData=new String[3];
 
+		int result;
 
-		this.print(this.title);
-		this.print(" [시작할까요?]\n");
-		this.print("  1. 시작        0. 종료\n");
-		this.print("  ________________________ :");
-		String menu = new String(); 
-		menu = this.userInput();
-
-		if(menu.equals("1")) {
-			isContinue=true;
+		while(flag) {
 			
-
-		}
-		while(isContinue) {
-
-			this.print(this.title);
-			this.print("숫자를 입력하세요 : ");//number1
-			number1=this.userInput();
-
-			this.print(this.title);
-			this.print("[연산자 선택]\n"
-					+ "1. 더하기	2. 빼기\n"
-					+"3. 곱하기	4. 나누기\n");
-			oper=this.userInput();
-
-			this.print(this.title);
-			this.print("숫자를 입력하세요 : ");//number2
-			number2=this.userInput();
-
-
-			Operator operator=new Operator(Integer.parseInt(number1), Integer.parseInt(number2));
-
-			switch(oper) {
-			case "1":
-				oper="+";
-				result=operator.plus();
-				break;
-			case "2":
-				oper="-";
-				result=operator.minus();
-				break;
-			case"3":
-				oper="×";
-				result=operator.product();
-				break;
-			default:
-				oper="÷";
-				result=operator.devide();
-				break;
+			for(int i=0 ;i<menu.length;i++) {
+				this.print(title);
+				this.print(menu[i]);
+				userData[i]=this.input();				
 			}
-			this.print("\n\n"+"연산 결과 : "+number1+" "+oper+" "+number2+" = " +result+"\n\n");
-			//result값을 그냥 입력해도 되는 이유는 "sting"+int = 문자로 인식하기 때문이다.
-			this.print("계속할까요?  y/n\n");
-			con=this.userInput();
-			if(con.equals("n")) {
-				this.print("\n프로그램을 종료합니다.\n");
-				break;
+//			this.print(text);
+//			//this.print("[enter first number] : ");
+//			print(menu[0]);
+//			number1=this.input();
+//
+//			this.print(text);
+//			//this.print("[select menu] \n");
+//			//this.print("	1. add	2.sub\n");
+//			//this.print("	3. mul	4.div\n");
+//			//this.print("----------------------------------------------\n");
+//			print(menu[1]);
+//			oper=this.input();
+//
+//			this.print(text);
+//			//this.print("[enter second number] : ");
+//			//this.print("----------------------------------------------\n");
+//			print(menu[2]);
+//			number2=this.input();
+
+			Operlator op = new Operlator(Integer.parseInt(userData[0]),Integer.parseInt(userData[2]));
+
+			if(userData[1].equals("1")) {
+				userData[1]=" + ";
+				result=op.add();			
+			}else if(userData[1].equals("2")) {
+				userData[1]=" - ";
+				result=op.sub();
+
+			}else if(userData[1].equals("3")) {
+				userData[1]=" X ";
+				result=op.sub();
+			}else {
+				userData[1]=" ÷ ";
+				result=op.sub();
 			}
-			//this.print(Integer.toString(result)+"\n\n");		
+
+			this.print("[result : "+ userData[0] + userData[1] + userData[2] + " = " +result+" ]");
+
+			this.print(text);
+			this.print("[continue?	 (y/n)] : ");
+
+			//if(this.input().equals("y")) {break;}
+			//this.print("----------------------------------------------\n");
+			ans=this.input();
+			if(ans.equals("n")) {
+				this.print("\n\n		-----stop calculator------\n");
+				flag=false;}
 		}
 	}
+	//연산을 위한 테이터 변환 및 분기
 
-	// 입력기능 : java.util.Scanner
-	//           패키지
-	private String userInput() {
-		Scanner scanner =	 new Scanner(System.in);
-		return scanner.next();
 
+	//입력기능
+	private String input() { //input은 return타입이 필요하다. 출력과 달리 재사용 시 효율을 높이기 위해 string으로 리턴해준다.
+		Scanner scan =new Scanner(System.in);
+		return scan.next();
+	}
+	//출력기능
+	private void print(String text) { //print는 그냥 출력하면 되기 때문에 return값이 불필요 하다.
+		System.out.print(text);		//하지만 받아서 출력할 파라메터(여기서는 string text)가 필요하다.
+	}
+	//대문 표지
+	private void title() {
+
+		StringBuilder titleBuilder=new StringBuilder();
+		titleBuilder.append("\n\n");
+		titleBuilder.append("------------------------------------------------\n\n");
+		titleBuilder.append("                Hello calculator\n\n");
+		titleBuilder.append("------------------------------------------------\n\n");
+
+		this.title = titleBuilder.toString();
+		//gate(titleBuilder.toString());
 	}
 
-	private String title() {
-		StringBuffer title = new StringBuffer();
-		title.append("--------------------------\n\n");
-		title.append("     Welcome to Calculator\n");
-		title.append("\n");
-		title.append("--------------------------\n");
-		return title.toString();
+	private String[] menu() {
+		
+		String[] menu=new String[3]; 		
+
+		menu[0]="[enter first number] : ";
+		menu[1]="[select menu] \n\n" + 
+				"		1. add	2.sub\n" + 
+				"		3. mul	4.div\n";
+		menu[2]="[enter second number] : ";
+
+		return menu;
 	}
-
-	private void print(String box) {
-		System.out.print(box);
-	}
-
-
 }
+
