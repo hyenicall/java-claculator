@@ -1,11 +1,13 @@
-package controller_calculator;
+package controller;
 
-import frontend_calculator.Front_End;
+import frontend.Frontend;
 
 public class Controller {
 
 	public static void main(String[] args) {
-		new Front_End();
+		new Frontend();//heap영역에서만 생성 함으로써 보안을 유지한다
+						//
 
-		}
+	}
+
 }
